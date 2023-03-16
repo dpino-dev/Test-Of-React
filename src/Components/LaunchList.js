@@ -25,7 +25,7 @@ export const LaunchList = () => {
   return (    
     <SimpleGrid minChildWidth='300px' padding={"10"}  spacing={"10"} >
       {
-        list.length ===0 ? (<Text fontSize='6xl'><b>Error- 429 Too Many Requests</b></Text>):
+        list.length ===0 ? (<Text fontSize='6xl'><b>Error 429 - Too Many Requests</b></Text>):
         list.map(( launch)=>{
           return <LaunchListItem key={launch.id} data = {launch} />
         })
