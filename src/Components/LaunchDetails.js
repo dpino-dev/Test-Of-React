@@ -72,8 +72,8 @@ export const LaunchDetails = () => {
 
   if (error) {
     return <Flex mt={6} ml={6}>
-      <Center w='200px'>
-        <Text fontSize='6xl'><b>{error}</b></Text>
+      <Center >
+        <Text fontSize='6xl'><b>Error {error}</b></Text>
       </Center>
     </Flex>
   }
