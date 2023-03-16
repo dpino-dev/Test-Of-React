@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit'
-import axios from 'axios'
 
 export const rocketslice = createSlice({
     name: "rockets",
@@ -10,7 +9,7 @@ export const rocketslice = createSlice({
     },
 
     reducers: {
-        actionSetRocketsList: (state, action) => {
+        actionSetLaunchList: (state, action) => {
             state.list = action.payload;
         },
 
@@ -20,17 +19,17 @@ export const rocketslice = createSlice({
     }
 })
 
-export const { actionSetRocketsList, actionGetDetails } = rocketslice.actions;
+export const { actionSetLaunchList, actionGetDetails } = rocketslice.actions;
 
 export default rocketslice.reducer;
 
-export const fetchAllRockets = () => async (dispatch) => {
-    await axios.get(`https://spacelaunchnow.me/api/3.3.0/launch/`)
-        .then((response) => {
-            dispatch(actionSetRocketsList(response.data.results))
-        })
-        .catch((error) => { console.log(error) })
-}
+// export const fetchAllRockets = () => async (dispatch) => {
+//     await axios.get(`https://spacelaunchnow.me/api/3.3.0/launch/`)
+//         .then((response) => {
+//             dispatch(actionSetRocketsList(response.data.results))
+//         })
+//         .catch((error) => { console.log(error) })
+// }
 
 export const selectedId = (id) => (dispatch) => {
 

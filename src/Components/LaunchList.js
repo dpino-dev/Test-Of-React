@@ -1,8 +1,14 @@
-import React, { Fragment, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+//import { Link } from 'react-router-dom';
 
-import { fetchAllRockets, selectedId } from '../Store/Slices/rocketslice'
-import { Link } from 'react-router-dom';
+import {
+  SimpleGrid,
+  Text
+} from '@chakra-ui/react';
+
+import { fetchAllLaunch } from './launchServices';
+import { LaunchListItem } from './LaunchListItem';
 
 
 export const LaunchList = () => {
@@ -12,38 +18,19 @@ export const LaunchList = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchAllRockets())
+   dispatch( fetchAllLaunch())
   }, [dispatch]);
 
-  return (
 
-    <Fragment>
-
-      <div className='container mt-4'>
-        <div className='row'>
-          {
-            (list.length === 0) ? (<h1><b>Error - Request failed with status code 429 wait... </b></h1>) :
-              list.map((launch, index) =>
-              (<div key={index} className="card mb-4" style={{ width: "18rem" }}>
-
-                <img src="../logo192.png" className="card-img-top" alt="..." />
-
-                <div className="card-body">
-
-                  <h5 className="card-title">{launch.name}</h5>
-                  <p className="card-text">ID: {launch.id}</p>
-                  <p className="card-text">status: {launch.status.name}</p>
-                  <p className="card-text">Service Provider: {launch.rocket.configuration.launch_service_provider}</p>
-                  <Link to="/details"><button onClick={() => { dispatch(selectedId(launch.id)) }} className="btn btn-primary">Go to Details</button></Link>
-
-                </div>
-              </div>))
-          }
-        </div>
-      </div>
-
-
-    </Fragment>
+  return (    
+    <SimpleGrid minChildWidth='300px' padding={"10"}  spacing={"10"} >
+      {
+        list.length ===0 ? (<Text fontSize='6xl'><b>Error- 429 Too Many Requests</b></Text>):
+        list.map(( launch)=>{
+          return <LaunchListItem key={launch.id} data = {launch} />
+        })
+      }
+    </SimpleGrid>
   )
 }
 

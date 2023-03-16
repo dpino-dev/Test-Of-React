@@ -23,48 +23,33 @@ import {
 import launch from './mock_launch.json'
 import { RocketPanelLaunchDetail } from './RocketPanelLaunchDetail'
 import { MissionPanelLaunchDetails } from './MissionPanelLaunchDetails '
+import LaunchService, { getDetail } from './launchServices'
 
 export const LaunchDetails = () => {
 
   const { id_details } = useSelector(state => state.rockets);
   const URLEndPoint = "https://spacelaunchnow.me/api/3.3.0/launch/"
 
-  const [data, SetData] = useState(null);
+  const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const getFakeDetail = async (id) => {
     setLoading(false)
-    SetData(launch)
+    setData(launch)
   }
 
-  const getDetail = async (id) => {
-    try {
-      const res = await fetch(URLEndPoint + `${id}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json;charset=utf-8'
-        },
-      });
-      if (res.status !== 200) {
-        setLoading(false);
-        throw new Error(`${res.status} - ${res.statusText}`)
-      } else {
-        setLoading(false)
-        setError(null)
-        SetData(await res.json())
-      }
-
-    }
-    catch (error) {
-      setError(error.message)
-    }
-  }
-
+  const service = new LaunchService('https://spacelaunchnow.me/api/3.3.0/launch/')
   useEffect(() => {
     (async () => {
-      await getDetail(id_details);
-      //await getFakeDetail('25')
+      //await getFakeDetail('25')    
+      const result = await service.getByID( id_details);
+      setLoading( false)
+      if( result instanceof Error) {
+        setError( result.message)
+      } else {
+        setData( result)
+      }
     })()
   }, [])
 
@@ -88,7 +73,7 @@ export const LaunchDetails = () => {
   if (error) {
     return <Flex mt={6} ml={6}>
       <Center w='200px'>
-        <Text ><b>{error}</b></Text>
+        <Text fontSize='6xl'><b>{error}</b></Text>
       </Center>
     </Flex>
   }
